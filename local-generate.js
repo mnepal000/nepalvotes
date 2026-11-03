@@ -8,7 +8,7 @@
    elections, articles, homepage and sitemap. generate.js also adds the
    local pages to sitemap.xml and the Local governments link to navigation,
    so run generate.js after this script, then run this script again: the
-   local pages use the same header, footer, styles.css?v=11 and site.js, and
+   local pages use the same header, footer, styles.css?v=12 and site.js, and
    survive regeneration. Do not hand edit files under local/; edit
    local-governments.js or local-reps.js and rerun this script. */
 var fs = require("fs");
@@ -59,7 +59,7 @@ function chrome(prefix, titleEN, titleNE, crumbs, body) {
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
     '<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">\n' +
     '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">\n' +
-    '<link rel="stylesheet" href="' + prefix + 'styles.css?v=11">\n</head>\n<body>\n' +
+    '<link rel="stylesheet" href="' + prefix + 'styles.css?v=12">\n</head>\n<body>\n' +
     "<header>\n<div class=\"wrap\">\n<div class=\"brand\">\n<div>\n" +
     '<h1><a href="' + prefix + 'index.html" class="brand-link">Nepal <span>Votes</span></a></h1>\n' +
     '<p class="tagline">' + bi("A digital media platform for free and fair elections in Nepal", "नेपालमा स्वतन्त्र र निष्पक्ष निर्वाचनका लागि डिजिटल मिडिया प्लेटफर्म") + "</p>\n</div>\n" +
@@ -80,7 +80,7 @@ fs.mkdirSync(path.join(DIR, "local"), { recursive: true });
 var pages = [];
 var seen = {};
 var unmatched = [];
-var coverage = { chief: 0, deputy: 0, phone: 0, email: 0, website: 0, address: 0 };
+var coverage = { chief: 0, deputy: 0, phone: 0, email: 0, website: 0, websiteLive: 0, websiteArchived: 0, address: 0 };
 Object.keys(LOCALS).sort().forEach(function (district) {
   var province = PROVINCE[district] || "To confirm";
   LOCALS[district].forEach(function (entry) {
@@ -95,7 +95,7 @@ Object.keys(LOCALS).sort().forEach(function (district) {
       if (rep.deputy) { coverage.deputy++; }
       if (rep.phone) { coverage.phone++; }
       if (rep.email) { coverage.email++; }
-      if (rep.website) { coverage.website++; }
+      if (rep.website) { coverage.website++; if (rep.websiteStatus === "archived") { coverage.websiteArchived++; } else { coverage.websiteLive++; } }
       if (rep.address) { coverage.address++; }
     }
     var titleEN = fullTypeName(name, type);
@@ -108,7 +108,9 @@ Object.keys(LOCALS).sort().forEach(function (district) {
       deputyHtml = esc(rep.deputy) + (rep.deputyParty ? " (" + esc(rep.deputyParty) + ")" : " (party: To confirm)") + (rep.year ? ", elected " + rep.year : "");
     } else { deputyHtml = "To confirm"; }
     var websiteHtml;
-    if (rep && rep.website) {
+    if (rep && rep.website && rep.websiteStatus === "archived" && rep.websiteArchive) {
+      websiteHtml = '<a href="' + esc(rep.websiteArchive) + '" target="_blank" rel="noopener">' + esc(rep.website) + "</a> (archived snapshot" + (rep.websiteArchiveDate ? ", " + esc(rep.websiteArchiveDate) : "") + ", not live now)";
+    } else if (rep && rep.website) {
       websiteHtml = '<a href="' + esc(rep.website) + '" target="_blank" rel="noopener">' + esc(rep.website) + "</a>";
     } else { websiteHtml = "No official website verified"; }
     var srcItems = [
@@ -134,7 +136,7 @@ Object.keys(LOCALS).sort().forEach(function (district) {
       "<tr><td>" + bi("Email", "इमेल") + "</td><td>" + (rep && rep.email ? esc(rep.email) : "To confirm") + "</td></tr>" +
       "<tr><td>" + bi("Official website", "आधिकारिक वेबसाइट") + "</td><td>" + websiteHtml + "</td></tr>" +
       "</tbody></table></div>" +
-      "<p>" + bi("Where no official website is verified, this page says so and does not link to a guessed domain, a social media page presented as official, or a news article as if it were the office site.", "जहाँ कुनै आधिकारिक वेबसाइट प्रमाणित भएको छैन, यो पृष्ठले त्यही भन्छ र अनुमानित डोमेन, आधिकारिक भनेर देखाइएको सामाजिक सञ्जाल पृष्ठ, वा कार्यालय साइट जस्तो समाचार लेखमा लिङ्क गर्दैन।") + "</p>" +
+      "<p>" + bi("Where no official website is verified, this page says so and does not link to a guessed domain, a social media page presented as official, or a news article as if it were the office site. Where a website is shown as archived, the link goes to an archived snapshot dated on this page, not to a live site.", "जहाँ कुनै आधिकारिक वेबसाइट प्रमाणित भएको छैन, यो पृष्ठले त्यही भन्छ र अनुमानित डोमेन, आधिकारिक भनेर देखाइएको सामाजिक सञ्जाल पृष्ठ, वा कार्यालय साइट जस्तो समाचार लेखमा लिङ्क गर्दैन। जहाँ वेबसाइट अभिलेखित भनेर देखाइएको छ, लिङ्क यस पृष्ठमा मिति सहितको अभिलेखित प्रतिलिपिमा जान्छ, प्रत्यक्ष साइटमा होइन।") + "</p>" +
       "<h2>" + bi("Sources", "स्रोतहरू") + "</h2><ul>" + srcItems.join("") + "</ul>" +
       "<p><a href=\"index.html\">" + bi("All local governments", "सबै स्थानीय सरकारहरू") + "</a> | <a href=\"../map.html\">" + bi("Constituency map", "निर्वाचन क्षेत्र नक्सा") + "</a> | <a href=\"../elections/2022-local-elections.html\">" + bi("2022 local elections", "सन् २०२२ को स्थानीय निर्वाचन") + "</a></p>";
     pages.push({ district: district, province: province, name: name, nameNE: nameNE, type: type, slug: s, file: s + ".html", titleEN: titleEN, titleNE: titleNE });
@@ -174,6 +176,6 @@ indexBody += '<script>document.getElementById("local-search").addEventListener("
 fs.writeFileSync(path.join(DIR, "local", "index.html"), chrome("../", "Local governments", "स्थानीय सरकारहरू",
   [{ en: "Home", ne: "गृहपृष्ठ", href: "../index.html" }, { en: "Local governments", ne: "स्थानीय सरकारहरू" }], indexBody));
 console.log("Local pages: " + pages.length);
-console.log("Coverage: chief " + coverage.chief + ", deputy " + coverage.deputy + ", phone " + coverage.phone + ", email " + coverage.email + ", website " + coverage.website + ", address " + coverage.address);
+console.log("Coverage: chief " + coverage.chief + ", deputy " + coverage.deputy + ", phone " + coverage.phone + ", email " + coverage.email + ", website " + coverage.website + " (live " + coverage.websiteLive + ", archived " + coverage.websiteArchived + "), address " + coverage.address);
 console.log("Unmatched rep entries: " + (unmatched.length ? unmatched.join(", ") : "none"));
 console.log("Slugs unique: " + Object.keys(seen).length);
