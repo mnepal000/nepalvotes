@@ -22,6 +22,27 @@
     return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
   function byDistrict(d) { return data.filter(function (c) { return c.d === d; }); }
+  var LOCAL_TYPES = ["Metropolitan City", "Sub-Metropolitan City", "Municipality", "Rural Municipality"];
+  var LOCAL_TYPE_NE = { "Metropolitan City": "महानगरपालिका", "Sub-Metropolitan City": "उपमहानगरपालिका", "Municipality": "नगरपालिका", "Rural Municipality": "गाउँपालिका" };
+  var LOCAL_TYPE_PLURAL = { "Metropolitan City": "metropolitan cities", "Sub-Metropolitan City": "sub-metropolitan cities", "Municipality": "municipalities", "Rural Municipality": "rural municipalities" };
+  function localHtml(d) {
+    var locals = (window.NEPALVOTES_LOCAL_GOVERNMENTS || {})[d] || [];
+    if (!locals.length) { return "<p><strong>Local governments:</strong> To confirm</p>"; }
+    var parts = [];
+    LOCAL_TYPES.forEach(function (t) {
+      var n = locals.filter(function (x) { return x[2] === t; }).length;
+      if (n) { parts.push(n + " " + (n === 1 ? t.toLowerCase() : LOCAL_TYPE_PLURAL[t])); }
+    });
+    var html = "<h4>Local governments: " + locals.length + "</h4>" +
+      "<p>" + parts.join(", ") + ".</p>";
+    LOCAL_TYPES.forEach(function (t) {
+      var items = locals.filter(function (x) { return x[2] === t; });
+      if (!items.length) { return; }
+      html += "<h5>" + esc(t) + " (" + esc(LOCAL_TYPE_NE[t]) + "): " + items.length + "</h5><ul>" +
+        items.map(function (x) { return "<li>" + esc(x[0]) + " " + esc(t) + " (" + esc(x[1]) + ")</li>"; }).join("") + "</ul>";
+    });
+    return html;
+  }
   function districtsInOrder() {
     var seen = {}, out = [];
     data.forEach(function (c) { if (!seen[c.d]) { seen[c.d] = true; out.push(c.d); } });
@@ -42,6 +63,7 @@
       "<strong>Provincial segments:</strong> " + esc(segA) + ", " + esc(segB) + "<br>" +
       "<strong>Electorate (2022):</strong> " + fmt(c.e) + "<br>" +
       "<strong>Winner:</strong> To confirm</p>" +
+      localHtml(c.d) +
       "<p>This constituency is shown at district level on the map. Its exact boundary inside " + esc(c.d) + " District is not drawn, because no verified constituency polygon file was used for this map.</p>" +
       "<p><a href=\"elections/2026-general-election.html\">2026 general election</a> | " +
       "<a href=\"elections/2022-general-election.html\">2022 general election</a></p>";
@@ -65,7 +87,8 @@
       "<p>Choose a constituency below to see its details. The shaded area is the whole district, not one constituency.</p>" +
       "<ul>" + list.map(function (c) {
         return "<li><button type=\"button\" class=\"const-btn\" data-name=\"" + esc(c.name) + "\">" + esc(c.name) + "</button></li>";
-      }).join("") + "</ul>";
+      }).join("") + "</ul>" +
+      localHtml(d);
     el.querySelectorAll(".const-btn").forEach(function (b) {
       b.addEventListener("click", function () {
         var c = data.filter(function (x) { return x.name === b.getAttribute("data-name"); })[0];

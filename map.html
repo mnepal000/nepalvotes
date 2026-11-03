@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="stylesheet" href="styles.css?v=7">
+<link rel="stylesheet" href="styles.css?v=8">
 </head>
 <body>
 <header>
@@ -53,7 +53,7 @@
 <div id="map" aria-label="Interactive map of Nepal districts"></div>
 <div class="province-legend" aria-label="Province colours"><span><i style="background:#2f6f8f"></i>Koshi (कोशी)</span><span><i style="background:#b5651d"></i>Madhesh (मधेश)</span><span><i style="background:#5b7a3a"></i>Bagmati (बागमती)</span><span><i style="background:#7a5c9e"></i>Gandaki (गण्डकी)</span><span><i style="background:#a41222"></i>Lumbini (लुम्बिनी)</span><span><i style="background:#2a7f7f"></i>Karnali (कर्णाली)</span><span><i style="background:#3a5a8c"></i>Sudurpashchim (सुदूरपश्चिम)</span></div>
 <div id="map-detail" class="map-panel">
-<p><span class="t-en">Click a district on the map, or choose a constituency from the list below.</span><span class="t-ne">नक्सामा जिल्लामा क्लिक गर्नुहोस्, वा तलको सूचीबाट निर्वाचन क्षेत्र छान्नुहोस्।</span></p>
+<p><span class="t-en">Click a district on the map, or choose a constituency from the list below. Clicking a district also shows its local governments: the count, the breakdown by type, and their names.</span><span class="t-ne">नक्सामा जिल्लामा क्लिक गर्नुहोस्, वा तलको सूचीबाट निर्वाचन क्षेत्र छान्नुहोस्। जिल्लामा क्लिक गर्दा त्यसका स्थानीय सरकारहरू पनि देखिन्छन्: सङ्ख्या, प्रकार अनुसारको विवरण र तिनका नामहरू।</span></p>
 </div>
 <h2><span class="t-en">All constituencies, by province and district</span><span class="t-ne">सबै निर्वाचन क्षेत्रहरू, प्रदेश र जिल्ला अनुसार</span></h2>
 <p><span class="t-en">Each federal constituency has two provincial assembly segments, shown as (A) and (B) in its detail panel. Electorate figures are for 2022. Winner is To confirm, because constituency winners are not in the verified site data used for this page.</span><span class="t-ne">प्रत्येक सङ्घीय निर्वाचन क्षेत्रमा दुई प्रदेश सभा खण्डहरू हुन्छन्, जुन विवरणमा (A) र (B) का रूपमा देखाइन्छ। मतदाता सङ्ख्या सन् २०२२ को हो। विजेता पुष्टि हुन बाँकी छ, किनभने निर्वाचन क्षेत्रका विजेताहरू यस पृष्ठका लागि प्रयोग गरिएको प्रमाणित साइट डाटामा छैनन्।</span></p>
@@ -63,6 +63,7 @@
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/List_of_parliamentary_constituencies_of_Nepal">List of parliamentary constituencies of Nepal</a>, based on the Constituency Delimitation Commission report of 31 August 2017, with 2022 electorate figures from the Election Commission of Nepal final roster as cited there. Province totals: Koshi 28, Madhesh 32, Bagmati 33, Gandaki 18, Lumbini 26, Karnali 12, Sudurpashchim 16, total 165.</li>
 <li>District boundaries: <a href="https://github.com/Acesmndr/nepal-geojson">Acesmndr nepal-geojson</a> (MIT licence, 77 district polygons, coordinates rounded to 4 decimal places, no boundary shape changed in any other way). District names were matched to the constituency list, including Dhanusa to Dhanusha, Kavrepalanchowk to Kavrepalanchok, and Parasi to Nawalparasi (Bardaghat Susta West).</li>
+<li>Local governments: <a href="https://github.com/ritushishir/nepali-canonical">ritushishir/nepali-canonical</a>, name-of-places/municipalities.json, which states it was checked against the Ministry of Federal Affairs and General Administration (MoFAGA) local level portal (sthaniya.gov.np/gis) in October 2026. Verified totals on build: 753 local levels in total, 6 metropolitan cities, 11 sub-metropolitan cities, 276 municipalities, 460 rural municipalities, across all 77 districts. District names were matched to the district polygons, including Terhathum to Tehrathum, Rukum East to Eastern Rukum, Rukum West to Western Rukum, and Nawalparasi to Nawalparasi (Bardaghat Susta West). Names are shown in English and Nepali exactly as in that source, in source order within each type group.</li>
 <li>Map style: polygon-only, with no base map tiles, so no roads, place labels, or neighbouring country labels are shown by construction. District polygons are drawn with Leaflet, no API key.</li>
 <li>What this page does not show: exact constituency polygons, constituency winners, candidates, or vote totals. Those are To confirm until a verified constituency polygon file and constituency result source are added. National results are on the <a href="elections/2026-general-election.html">2026 general election</a> and <a href="elections/2022-general-election.html">2022 general election</a> pages.</li>
 </ul>
@@ -72,7 +73,8 @@
 <footer><div class="wrap footer-inner"><p><span class="t-en">NepalVotes v1 is a local preview build. It is not live at nepalvotes.com and no DNS change has been made.</span><span class="t-ne">नेपालभोट्स v1 स्थानीय पूर्वावलोकन निर्माण हो। यो nepalvotes.com मा लाइभ छैन र कुनै डीएनएस परिवर्तन गरिएको छैन।</span></p><p><span class="t-en">NepalVotes is an independent archive. It is not affiliated with the Election Commission of Nepal or any political party, and it carries no party logos or endorsements.</span><span class="t-ne">नेपालभोट्स स्वतन्त्र अभिलेख हो। यो नेपाल निर्वाचन आयोग वा कुनै राजनीतिक दलसँग सम्बद्ध छैन र यसले कुनै दलको लोगो वा समर्थन राख्दैन।</span></p></div></footer>
 <script src="site.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="constituencies.js?v=7"></script>
-<script src="map.js?v=7"></script>
+<script src="constituencies.js?v=8"></script>
+<script src="local-governments.js?v=8"></script>
+<script src="map.js?v=8"></script>
 </body>
 </html>
