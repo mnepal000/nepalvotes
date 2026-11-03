@@ -2,7 +2,10 @@
    articles.js. Source of truth is data.js (v1 election numbers, untouched) and
    articles.js (encyclopedia articles). Run: node generate.js
    Generated pages are written into this folder and work when served statically.
-   Do not hand edit generated pages; edit data.js or articles.js and rerun. */
+   Do not hand edit generated pages; edit data.js or articles.js and rerun.
+   Exception: map.html is hand maintained (it needs Leaflet and its own
+   scripts), but its link is in the generated navigation, homepage and
+   elections index, so it is not orphaned. See README.md. */
 var fs = require("fs");
 var path = require("path");
 var vm = require("vm");
@@ -98,6 +101,7 @@ function chrome(prefix, titleEN, titleNE, crumbs, body, scripts) {
     '<a href="' + prefix + 'index.html">' + bi("Home", "गृहपृष्ठ") + "</a>" +
     '<a href="' + prefix + 'elections.html">' + bi("Elections", "निर्वाचनहरू") + "</a>" +
     '<a href="' + prefix + 'articles.html">' + bi("Articles", "लेखहरू") + "</a>" +
+    '<a href="' + prefix + 'map.html">' + bi("Map", "नक्सा") + "</a>" +
     '<a href="' + prefix + 'search.html">' + bi("Search", "खोज्नुहोस्") + "</a></nav>";
   var crumbHtml = crumbs.map(function (c, i) {
     var sep = i ? " / " : "";
@@ -112,7 +116,7 @@ function chrome(prefix, titleEN, titleNE, crumbs, body, scripts) {
     '<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
     '<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">\n' +
-    '<link rel="stylesheet" href="' + prefix + 'styles.css?v=3">\n</head>\n<body>\n' +
+    '<link rel="stylesheet" href="' + prefix + 'styles.css?v=4">\n</head>\n<body>\n' +
     "<header>\n<div class=\"wrap\">\n<div class=\"brand\">\n<div>\n" +
     '<h1><a href="' + prefix + 'index.html" class="brand-link">Nepal <span>Votes</span></a></h1>\n' +
     '<p class="tagline">' + bi(UI.en.tagline, UI.ne.tagline) + "</p>\n</div>\n" +
@@ -241,6 +245,7 @@ function main() {
   var byLevel = {};
   sorted.forEach(function (e) { (byLevel[e.level] = byLevel[e.level] || []).push(e); });
   var electionsBody = "<h2>" + bi("All elections", "सबै निर्वाचनहरू") + "</h2>" +
+    '<p><a href="map.html">' + bi("Interactive map of all 165 constituencies", "सबै १६५ निर्वाचन क्षेत्रहरूको अन्तरक्रियात्मक नक्सा") + "</a></p>" +
     ["national", "provincial", "local"].map(function (lvl) {
       var items = (byLevel[lvl] || []).map(function (e) {
         return { url: electionUrl(e), titleEN: e.titleEN, titleNE: e.titleNE, summaryEN: e.outcomeEN, summaryNE: e.outcomeNE, metaEN: levelLabelEN(lvl), metaNE: levelLabelNE(lvl), year: e.year };
@@ -307,6 +312,7 @@ function main() {
     '<section id="grid" class="grid" aria-live="polite"></section>' +
     '<p><a href="elections.html">' + bi("See all elections", "सबै निर्वाचनहरू हेर्नुहोस्") + "</a> | " +
     '<a href="articles.html">' + bi("Browse encyclopedia articles", "विश्वकोश लेखहरू हेर्नुहोस्") + "</a> | " +
+    '<a href="map.html">' + bi("Interactive map of constituencies", "निर्वाचन क्षेत्रहरूको अन्तरक्रियात्मक नक्सा") + "</a> | " +
     '<a href="search.html">' + bi("Search all pages", "सबै पृष्ठ खोज्नुहोस्") + "</a></p>" +
     (articlePreview.length ? "<section><h2>" + bi("Encyclopedia articles", "विश्वकोश लेखहरू") + "</h2><div class=\"grid\">" + cardList(articlePreview, "") + "</div><p><a href=\"articles.html\">" + bi("See all articles", "सबै लेखहरू हेर्नुहोस्") + "</a></p></section>" : "") +
     '<section class="history" aria-label="Party history"><h2 data-i18n="partyHistory">' + esc(UI.en.partyHistory) + "</h2>" +
@@ -319,7 +325,7 @@ function main() {
     [{ en: "Home", ne: "गृहपृष्ठ" }], homeBody,
     '<script src="data.js"></script>\n<script src="articles.js"></script>\n<script src="app.js"></script>'));
   // Sitemap
-  var urls = ["index.html", "elections.html", "articles.html", "search.html"]
+  var urls = ["index.html", "elections.html", "articles.html", "map.html", "search.html"]
     .concat(sorted.map(electionUrl))
     .concat(ARTICLES.map(articleUrl));
   var sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +

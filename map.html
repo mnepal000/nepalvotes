@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Constituency map | NepalVotes</title>
+<meta name="description" content="Interactive map of Nepal showing all 165 federal constituencies, by province and district.">
+<meta name="theme-color" content="#14365e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="styles.css?v=4">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="brand">
+<div>
+<h1><a href="index.html" class="brand-link">Nepal <span>Votes</span></a></h1>
+<p class="tagline"><span class="t-en">A digital media platform for free and fair elections in Nepal</span><span class="t-ne">नेपालमा स्वतन्त्र र निष्पक्ष निर्वाचनका लागि डिजिटल मिडिया प्लेटफर्म</span></p>
+</div>
+<div class="lang" role="group" aria-label="Language"><button type="button" id="lang-en">English</button><button type="button" id="lang-ne">नेपाली</button></div>
+</div>
+<nav class="topnav" aria-label="Site"><a href="index.html"><span class="t-en">Home</span><span class="t-ne">गृहपृष्ठ</span></a><a href="elections.html"><span class="t-en">Elections</span><span class="t-ne">निर्वाचनहरू</span></a><a href="articles.html"><span class="t-en">Articles</span><span class="t-ne">लेखहरू</span></a><a href="map.html"><span class="t-en">Map</span><span class="t-ne">नक्सा</span></a><a href="search.html"><span class="t-en">Search</span><span class="t-ne">खोज्नुहोस्</span></a></nav>
+</div>
+</header>
+<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumbs"><a href="index.html"><span class="t-en">Home</span><span class="t-ne">गृहपृष्ठ</span></a> / <span><span class="t-en">Constituency map</span><span class="t-ne">निर्वाचन क्षेत्र नक्सा</span></span></nav>
+<h2><span class="t-en">Constituency map of Nepal</span><span class="t-ne">नेपालको निर्वाचन क्षेत्र नक्सा</span></h2>
+<p><span class="t-en">All 165 federal constituencies of the House of Representatives, from the Constituency Delimitation Commission report of 31 August 2017, grouped by province and district.</span><span class="t-ne">३१ अगस्ट २०१७ को निर्वाचन क्षेत्र निर्धारण आयोगको प्रतिवेदन अनुसार प्रतिनिधि सभाका सबै १६५ सङ्घीय निर्वाचन क्षेत्रहरू, प्रदेश र जिल्ला अनुसार।</span></p>
+<div class="sources map-note">
+<p><strong><span class="t-en">Please read this before using the map</span><span class="t-ne">नक्सा प्रयोग गर्नुअघि यो पढ्नुहोस्</span></strong></p>
+<p><span class="t-en">This map shows district boundaries, NOT exact constituency polygons. No verified open file of all 165 constituency polygons was found for this build, so constituency boundaries inside a district are not drawn and are not guessed. Click a district to see its constituencies, then click a constituency to highlight its district and see its details. Every constituency is also in the list below, so the map is never the only way to reach one.</span><span class="t-ne">यो नक्साले जिल्ला सीमाहरू देखाउँछ, निर्वाचन क्षेत्रका ठ्याक्कै सीमाहरू होइन। सबै १६५ निर्वाचन क्षेत्रका प्रमाणित खुला फाइल भेटिएन, त्यसैले जिल्लाभित्रका निर्वाचन क्षेत्र सीमाहरू कोरिएका छैनन् र अनुमान गरिएका छैनन्। जिल्लामा क्लिक गरेर त्यसका निर्वाचन क्षेत्रहरू हेर्नुहोस्, त्यसपछि निर्वाचन क्षेत्रमा क्लिक गरेर त्यसको जिल्ला र विवरण हेर्नुहोस्।</span></p>
+</div>
+<section class="controls" aria-label="Map controls">
+<label><span class="t-en">Province</span><span class="t-ne">प्रदेश</span></label>
+<select id="province-filter" aria-label="Filter by province">
+<option value="">All provinces (165)</option>
+<option value="Koshi">Koshi (कोशी), 28</option>
+<option value="Madhesh">Madhesh (मधेश), 32</option>
+<option value="Bagmati">Bagmati (बागमती), 33</option>
+<option value="Gandaki">Gandaki (गण्डकी), 18</option>
+<option value="Lumbini">Lumbini (लुम्बिनी), 26</option>
+<option value="Karnali">Karnali (कर्णाली), 12</option>
+<option value="Sudurpashchim">Sudurpashchim (सुदूरपश्चिम), 16</option>
+</select>
+<label><span class="t-en">Search district or constituency</span><span class="t-ne">जिल्ला वा निर्वाचन क्षेत्र खोज्नुहोस्</span></label>
+<input type="search" id="map-search" placeholder="Search, for example Kathmandu, Jhapa, or Kailali 3" aria-label="Search district or constituency">
+<button type="button" id="map-reset" class="level-btn"><span class="t-en">Reset view</span><span class="t-ne">दृश्य रिसेट गर्नुहोस्</span></button>
+<p><span id="map-count">165 of 165 constituencies shown</span></p>
+</section>
+<div class="map-layout">
+<div id="map" aria-label="Interactive map of Nepal districts"></div>
+<div id="map-detail" class="map-panel">
+<p><span class="t-en">Click a district on the map, or choose a constituency from the list below.</span><span class="t-ne">नक्सामा जिल्लामा क्लिक गर्नुहोस्, वा तलको सूचीबाट निर्वाचन क्षेत्र छान्नुहोस्।</span></p>
+</div>
+</div>
+<h2><span class="t-en">All constituencies, by province and district</span><span class="t-ne">सबै निर्वाचन क्षेत्रहरू, प्रदेश र जिल्ला अनुसार</span></h2>
+<p><span class="t-en">Each federal constituency has two provincial assembly segments, shown as (A) and (B) in its detail panel. Electorate figures are for 2022. Winner is To confirm, because constituency winners are not in the verified site data used for this page.</span><span class="t-ne">प्रत्येक सङ्घीय निर्वाचन क्षेत्रमा दुई प्रदेश सभा खण्डहरू हुन्छन्, जुन विवरणमा (A) र (B) का रूपमा देखाइन्छ। मतदाता सङ्ख्या सन् २०२२ को हो। विजेता पुष्टि हुन बाँकी छ, किनभने निर्वाचन क्षेत्रका विजेताहरू यस पृष्ठका लागि प्रयोग गरिएको प्रमाणित साइट डाटामा छैनन्।</span></p>
+<div id="const-list" class="const-list"></div>
+<section class="sources" aria-label="Sources">
+<h2><span class="t-en">Sources and method</span><span class="t-ne">स्रोत र विधि</span></h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/List_of_parliamentary_constituencies_of_Nepal">List of parliamentary constituencies of Nepal</a>, based on the Constituency Delimitation Commission report of 31 August 2017, with 2022 electorate figures from the Election Commission of Nepal final roster as cited there. Province totals: Koshi 28, Madhesh 32, Bagmati 33, Gandaki 18, Lumbini 26, Karnali 12, Sudurpashchim 16, total 165.</li>
+<li>District boundaries: <a href="https://github.com/Acesmndr/nepal-geojson">Acesmndr nepal-geojson</a> (MIT licence, 77 district polygons, coordinates rounded to 4 decimal places, no boundary shape changed in any other way). District names were matched to the constituency list, including Dhanusa to Dhanusha, Kavrepalanchowk to Kavrepalanchok, and Parasi to Nawalparasi (Bardaghat Susta West).</li>
+<li>Base map tiles: <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, via Leaflet, no API key. Attribution is also shown on the map itself.</li>
+<li>What this page does not show: exact constituency polygons, constituency winners, candidates, or vote totals. Those are To confirm until a verified constituency polygon file and constituency result source are added. National results are on the <a href="elections/2026-general-election.html">2026 general election</a> and <a href="elections/2022-general-election.html">2022 general election</a> pages.</li>
+</ul>
+<p><span class="t-en">Note on names: constituency and district names are shown in English as in the delimitation list. Nawalpur is the Gandaki district formed from the eastern part of the old Nawalparasi district, and Nawalparasi (Bardaghat Susta West), also called Parasi, is the Lumbini district formed from its western part.</span><span class="t-ne">नामसम्बन्धी टिप्पणी: निर्वाचन क्षेत्र र जिल्लाका नामहरू निर्धारण सूची अनुसार अङ्ग्रेजीमा देखाइएका छन्।</span></p>
+</section>
+</main>
+<footer><div class="wrap footer-inner"><p><span class="t-en">NepalVotes v1 is a local preview build. It is not live at nepalvotes.com and no DNS change has been made.</span><span class="t-ne">नेपालभोट्स v1 स्थानीय पूर्वावलोकन निर्माण हो। यो nepalvotes.com मा लाइभ छैन र कुनै डीएनएस परिवर्तन गरिएको छैन।</span></p><p><span class="t-en">NepalVotes is an independent archive. It is not affiliated with the Election Commission of Nepal or any political party, and it carries no party logos or endorsements.</span><span class="t-ne">नेपालभोट्स स्वतन्त्र अभिलेख हो। यो नेपाल निर्वाचन आयोग वा कुनै राजनीतिक दलसँग सम्बद्ध छैन र यसले कुनै दलको लोगो वा समर्थन राख्दैन।</span></p></div></footer>
+<script src="site.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="constituencies.js"></script>
+<script src="map.js"></script>
+</body>
+</html>
