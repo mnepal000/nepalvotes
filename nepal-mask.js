@@ -11,8 +11,13 @@
   function buildMaskFeature(geo) {
     var holes = [];
     (geo.features || []).forEach(function (f) {
-      if (f.geometry && f.geometry.type === "Polygon" && f.geometry.coordinates && f.geometry.coordinates[0]) {
+      if (!f.geometry || !f.geometry.coordinates) { return; }
+      if (f.geometry.type === "Polygon" && f.geometry.coordinates[0]) {
         holes.push(f.geometry.coordinates[0]);
+      } else if (f.geometry.type === "MultiPolygon") {
+        f.geometry.coordinates.forEach(function (poly) {
+          if (poly && poly[0]) { holes.push(poly[0]); }
+        });
       }
     });
     return {

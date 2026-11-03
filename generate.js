@@ -117,7 +117,7 @@ function chrome(prefix, titleEN, titleNE, crumbs, body, scripts) {
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
     '<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">\n' +
     '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">\n' +
-    '<link rel="stylesheet" href="' + prefix + 'styles.css?v=5">\n</head>\n<body>\n' +
+    '<link rel="stylesheet" href="' + prefix + 'styles.css?v=6">\n</head>\n<body>\n' +
     "<header>\n<div class=\"wrap\">\n<div class=\"brand\">\n<div>\n" +
     '<h1><a href="' + prefix + 'index.html" class="brand-link">Nepal <span>Votes</span></a></h1>\n' +
     '<p class="tagline">' + bi(UI.en.tagline, UI.ne.tagline) + "</p>\n</div>\n" +
@@ -331,7 +331,7 @@ function main() {
     "<p>" + bi("Each election page also lists its own sources.", "प्रत्येक निर्वाचन पृष्ठमा त्यसका आफ्नै स्रोतहरू पनि दिइएका छन्।") + "</p></section>";
   fs.writeFileSync(path.join(DIR, "index.html"), chrome("", "Nepal Votes", "नेपाल भोट्स",
     [{ en: "Home", ne: "गृहपृष्ठ" }], homeBody,
-    '<script src="data.js"></script>\n<script src="articles.js"></script>\n<script src="app.js"></script>\n<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>\n<script src="constituencies.js"></script>\n<script src="nepal-mask.js"></script>\n<script src="home-map.js"></script>'));
+    '<script src="data.js"></script>\n<script src="articles.js"></script>\n<script src="app.js"></script>\n<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>\n<script src="constituencies.js?v=6"></script>\n<script src="nepal-mask.js?v=6"></script>\n<script src="home-map.js?v=6"></script>'));
   // Sitemap
   var urls = ["index.html", "elections.html", "articles.html", "map.html", "search.html"]
     .concat(sorted.map(electionUrl))
