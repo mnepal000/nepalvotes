@@ -16,6 +16,7 @@
   var LOCAL_TYPES = ["Metropolitan City", "Sub-Metropolitan City", "Municipality", "Rural Municipality"];
   var LOCAL_TYPE_NE = { "Metropolitan City": "महानगरपालिका", "Sub-Metropolitan City": "उपमहानगरपालिका", "Municipality": "नगरपालिका", "Rural Municipality": "गाउँपालिका" };
   var LOCAL_TYPE_PLURAL = { "Metropolitan City": "metropolitan cities", "Sub-Metropolitan City": "sub-metropolitan cities", "Municipality": "municipalities", "Rural Municipality": "rural municipalities" };
+  function localSlug(d, n) { return String(d + "-" + n).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
   function localHtml(d) {
     var locals = (window.NEPALVOTES_LOCAL_GOVERNMENTS || {})[d] || [];
     if (!locals.length) { return "<p><strong>Local governments:</strong> To confirm</p>"; }
@@ -30,7 +31,7 @@
       var items = locals.filter(function (x) { return x[2] === t; });
       if (!items.length) { return; }
       html += "<h5>" + esc(t) + " (" + esc(LOCAL_TYPE_NE[t]) + "): " + items.length + "</h5><ul>" +
-        items.map(function (x) { return "<li>" + esc(x[0]) + " " + esc(t) + " (" + esc(x[1]) + ")</li>"; }).join("") + "</ul>";
+        items.map(function (x) { return "<li><a href=\"local/" + localSlug(d, x[0]) + ".html\">" + esc(x[0]) + " " + esc(t) + " (" + esc(x[1]) + ")</a></li>"; }).join("") + "</ul>";
     });
     return html;
   }

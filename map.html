@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="stylesheet" href="styles.css?v=8">
+<link rel="stylesheet" href="styles.css?v=9">
 </head>
 <body>
 <header>
@@ -22,7 +22,7 @@
 </div>
 <div class="lang" role="group" aria-label="Language"><button type="button" id="lang-en">English</button><button type="button" id="lang-ne">नेपाली</button></div>
 </div>
-<nav class="topnav" aria-label="Site"><a href="index.html"><span class="t-en">Home</span><span class="t-ne">गृहपृष्ठ</span></a><a href="elections.html"><span class="t-en">Elections</span><span class="t-ne">निर्वाचनहरू</span></a><a href="articles.html"><span class="t-en">Articles</span><span class="t-ne">लेखहरू</span></a><a href="map.html"><span class="t-en">Map</span><span class="t-ne">नक्सा</span></a><a href="search.html"><span class="t-en">Search</span><span class="t-ne">खोज्नुहोस्</span></a></nav>
+<nav class="topnav" aria-label="Site"><a href="index.html"><span class="t-en">Home</span><span class="t-ne">गृहपृष्ठ</span></a><a href="elections.html"><span class="t-en">Elections</span><span class="t-ne">निर्वाचनहरू</span></a><a href="articles.html"><span class="t-en">Articles</span><span class="t-ne">लेखहरू</span></a><a href="map.html"><span class="t-en">Map</span><span class="t-ne">नक्सा</span></a><a href="local/index.html"><span class="t-en">Local governments</span><span class="t-ne">स्थानीय सरकारहरू</span></a><a href="search.html"><span class="t-en">Search</span><span class="t-ne">खोज्नुहोस्</span></a></nav>
 </div>
 </header>
 <main class="wrap">
@@ -57,6 +57,7 @@
 </div>
 <h2><span class="t-en">All constituencies, by province and district</span><span class="t-ne">सबै निर्वाचन क्षेत्रहरू, प्रदेश र जिल्ला अनुसार</span></h2>
 <p><span class="t-en">Each federal constituency has two provincial assembly segments, shown as (A) and (B) in its detail panel. Electorate figures are for 2022. Winner is To confirm, because constituency winners are not in the verified site data used for this page.</span><span class="t-ne">प्रत्येक सङ्घीय निर्वाचन क्षेत्रमा दुई प्रदेश सभा खण्डहरू हुन्छन्, जुन विवरणमा (A) र (B) का रूपमा देखाइन्छ। मतदाता सङ्ख्या सन् २०२२ को हो। विजेता पुष्टि हुन बाँकी छ, किनभने निर्वाचन क्षेत्रका विजेताहरू यस पृष्ठका लागि प्रयोग गरिएको प्रमाणित साइट डाटामा छैनन्।</span></p>
+<p><a href="local/index.html"><span class="t-en">All 753 local governments, with individual pages</span><span class="t-ne">सबै ७५३ स्थानीय सरकारहरू, छुट्टाछुट्टै पृष्ठहरूसहित</span></a></p>
 <div id="const-list" class="const-list"></div>
 <section class="sources" aria-label="Sources">
 <h2><span class="t-en">Sources and method</span><span class="t-ne">स्रोत र विधि</span></h2>
@@ -73,8 +74,8 @@
 <footer><div class="wrap footer-inner"><p><span class="t-en">NepalVotes v1 is a local preview build. It is not live at nepalvotes.com and no DNS change has been made.</span><span class="t-ne">नेपालभोट्स v1 स्थानीय पूर्वावलोकन निर्माण हो। यो nepalvotes.com मा लाइभ छैन र कुनै डीएनएस परिवर्तन गरिएको छैन।</span></p><p><span class="t-en">NepalVotes is an independent archive. It is not affiliated with the Election Commission of Nepal or any political party, and it carries no party logos or endorsements.</span><span class="t-ne">नेपालभोट्स स्वतन्त्र अभिलेख हो। यो नेपाल निर्वाचन आयोग वा कुनै राजनीतिक दलसँग सम्बद्ध छैन र यसले कुनै दलको लोगो वा समर्थन राख्दैन।</span></p></div></footer>
 <script src="site.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="constituencies.js?v=8"></script>
-<script src="local-governments.js?v=8"></script>
-<script src="map.js?v=8"></script>
+<script src="constituencies.js?v=9"></script>
+<script src="local-governments.js?v=9"></script>
+<script src="map.js?v=9"></script>
 </body>
 </html>

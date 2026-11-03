@@ -102,6 +102,7 @@ function chrome(prefix, titleEN, titleNE, crumbs, body, scripts) {
     '<a href="' + prefix + 'elections.html">' + bi("Elections", "निर्वाचनहरू") + "</a>" +
     '<a href="' + prefix + 'articles.html">' + bi("Articles", "लेखहरू") + "</a>" +
     '<a href="' + prefix + 'map.html">' + bi("Map", "नक्सा") + "</a>" +
+    '<a href="' + prefix + 'local/index.html">' + bi("Local governments", "स्थानीय सरकारहरू") + "</a>" +
     '<a href="' + prefix + 'search.html">' + bi("Search", "खोज्नुहोस्") + "</a></nav>";
   var crumbHtml = crumbs.map(function (c, i) {
     var sep = i ? " / " : "";
@@ -117,7 +118,7 @@ function chrome(prefix, titleEN, titleNE, crumbs, body, scripts) {
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
     '<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">\n' +
     '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">\n' +
-    '<link rel="stylesheet" href="' + prefix + 'styles.css?v=8">\n</head>\n<body>\n' +
+    '<link rel="stylesheet" href="' + prefix + 'styles.css?v=9">\n</head>\n<body>\n' +
     "<header>\n<div class=\"wrap\">\n<div class=\"brand\">\n<div>\n" +
     '<h1><a href="' + prefix + 'index.html" class="brand-link">Nepal <span>Votes</span></a></h1>\n' +
     '<p class="tagline">' + bi(UI.en.tagline, UI.ne.tagline) + "</p>\n</div>\n" +
@@ -322,6 +323,7 @@ function main() {
     '<p><a href="elections.html">' + bi("See all elections", "सबै निर्वाचनहरू हेर्नुहोस्") + "</a> | " +
     '<a href="articles.html">' + bi("Browse encyclopedia articles", "विश्वकोश लेखहरू हेर्नुहोस्") + "</a> | " +
     '<a href="map.html">' + bi("Interactive map of constituencies", "निर्वाचन क्षेत्रहरूको अन्तरक्रियात्मक नक्सा") + "</a> | " +
+    '<a href="local/index.html">' + bi("All 753 local governments", "सबै ७५३ स्थानीय सरकारहरू") + "</a> | " +
     '<a href="search.html">' + bi("Search all pages", "सबै पृष्ठ खोज्नुहोस्") + "</a></p>" +
     (articlePreview.length ? "<section><h2>" + bi("Encyclopedia articles", "विश्वकोश लेखहरू") + "</h2><div class=\"grid\">" + cardList(articlePreview, "") + "</div><p><a href=\"articles.html\">" + bi("See all articles", "सबै लेखहरू हेर्नुहोस्") + "</a></p></section>" : "") +
     '<section class="history" aria-label="Party history"><h2 data-i18n="partyHistory">' + esc(UI.en.partyHistory) + "</h2>" +
@@ -332,11 +334,19 @@ function main() {
     "<p>" + bi("Each election page also lists its own sources.", "प्रत्येक निर्वाचन पृष्ठमा त्यसका आफ्नै स्रोतहरू पनि दिइएका छन्।") + "</p></section>";
   fs.writeFileSync(path.join(DIR, "index.html"), chrome("", "Nepal Votes", "नेपाल भोट्स",
     [{ en: "Home", ne: "गृहपृष्ठ" }], homeBody,
-    '<script src="data.js"></script>\n<script src="articles.js"></script>\n<script src="app.js"></script>\n<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>\n<script src="constituencies.js?v=8"></script>\n<script src="local-governments.js?v=8"></script>\n<script src="home-map.js?v=8"></script>'));
+    '<script src="data.js"></script>\n<script src="articles.js"></script>\n<script src="app.js"></script>\n<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>\n<script src="constituencies.js?v=9"></script>\n<script src="local-governments.js?v=9"></script>\n<script src="home-map.js?v=9"></script>'));
   // Sitemap
-  var urls = ["index.html", "elections.html", "articles.html", "map.html", "search.html"]
+  var LOCAL_URLS = [];
+  try {
+    var LG = loadGlobal("local-governments.js", "NEPALVOTES_LOCAL_GOVERNMENTS");
+    Object.keys(LG).sort().forEach(function (d) {
+      LG[d].forEach(function (e) { LOCAL_URLS.push("local/" + slugify(d + "-" + e[0]) + ".html"); });
+    });
+  } catch (e) { LOCAL_URLS = []; }
+  var urls = ["index.html", "elections.html", "articles.html", "map.html", "search.html", "local/index.html"]
     .concat(sorted.map(electionUrl))
-    .concat(ARTICLES.map(articleUrl));
+    .concat(ARTICLES.map(articleUrl))
+    .concat(LOCAL_URLS);
   var sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     urls.map(function (u) { return "  <url><loc>https://nepalvotes.com/" + u + "</loc></url>"; }).join("\n") + "\n</urlset>\n";
   fs.writeFileSync(path.join(DIR, "sitemap.xml"), sitemap);
