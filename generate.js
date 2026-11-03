@@ -108,6 +108,10 @@ function chrome(prefix, titleEN, titleNE, crumbs, body, scripts) {
     '<meta name="viewport" content="width=device-width, initial-scale=1">\n' +
     "<title>" + esc(titleEN) + " | NepalVotes</title>\n" +
     '<meta name="description" content="' + esc(titleEN) + '">\n' +
+    '<meta name="theme-color" content="#14365e">\n' +
+    '<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
+    '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
+    '<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">\n' +
     '<link rel="stylesheet" href="' + prefix + 'styles.css">\n</head>\n<body>\n' +
     "<header>\n<div class=\"wrap\">\n<div class=\"brand\">\n<div>\n" +
     '<h1><a href="' + prefix + 'index.html" class="brand-link">Nepal<span>Votes</span></a></h1>\n' +
@@ -117,9 +121,9 @@ function chrome(prefix, titleEN, titleNE, crumbs, body, scripts) {
     '<button type="button" id="lang-ne">नेपाली</button></div>\n</div>\n' + nav + "\n</div>\n</header>\n" +
     '<main class="wrap">\n<nav class="crumbs" aria-label="Breadcrumbs">' + crumbHtml + "</nav>\n" +
     body + "\n</main>\n" +
-    '<footer class="wrap"><p>' + bi(UI.en.footerNote, UI.ne.footerNote) + "</p>" +
+    '<footer><div class="wrap footer-inner"><p>' + bi(UI.en.footerNote, UI.ne.footerNote) + "</p>" +
     "<p>" + bi("NepalVotes is an independent archive. It is not affiliated with the Election Commission of Nepal or any political party, and it carries no party logos or endorsements.",
-      "नेपालभोट्स स्वतन्त्र अभिलेख हो। यो नेपाल निर्वाचन आयोग वा कुनै राजनीतिक दलसँग सम्बद्ध छैन र यसले कुनै दलको लोगो वा समर्थन राख्दैन।") + "</p></footer>\n" +
+      "नेपालभोट्स स्वतन्त्र अभिलेख हो। यो नेपाल निर्वाचन आयोग वा कुनै राजनीतिक दलसँग सम्बद्ध छैन र यसले कुनै दलको लोगो वा समर्थन राख्दैन।") + "</p></div></footer>\n" +
     '<script src="' + prefix + 'site.js"></script>\n' + (scripts || "") + "\n</body>\n</html>\n";
 }
 
@@ -169,17 +173,18 @@ function electionPage(e) {
   var srcHtml = src.length ? "<h2>" + bi("Sources", "स्रोतहरू") + "</h2><ul>" +
     src.map(function (s) { return '<li><a href="' + s.url + '">' + esc(s.label) + "</a></li>"; }).join("") + "</ul>" : "";
   var body = "<h2>" + bi(e.titleEN, e.titleNE) + "</h2>" +
-    "<p><strong>" + bi("Date", "मिति") + ":</strong> " + bi(e.dateEN, e.dateNE) + "</p>" +
-    "<p><strong>" + bi("Level", "तह") + ":</strong> " + bi(levelLabelEN(e.level), levelLabelNE(e.level)) + "</p>" +
-    "<p><strong>" + bi("Seats", "सिट") + ":</strong> " + (e.seats === null ? "To confirm" : fmt(e.seats)) +
-    " | <strong>" + bi("Turnout", "मतदान प्रतिशत") + ":</strong> " + (e.turnout || "To confirm") + "</p>" +
-    "<p><strong>" + bi("System", "प्रणाली") + ":</strong> " + bi(e.systemEN, e.systemNE) + "</p>" +
-    "<p><strong>" + bi("Outcome", "परिणाम") + ":</strong> " + bi(e.outcomeEN, e.outcomeNE) + "</p>" +
+    '<div class="fact-strip">' +
+    '<div><span class="fact-label">' + bi("Date", "मिति") + "</span><strong>" + bi(e.dateEN, e.dateNE) + "</strong></div>" +
+    '<div><span class="fact-label">' + bi("Level", "तह") + "</span><strong>" + bi(levelLabelEN(e.level), levelLabelNE(e.level)) + "</strong></div>" +
+    '<div><span class="fact-label">' + bi("Seats", "सिट") + "</span><strong>" + (e.seats === null ? "To confirm" : fmt(e.seats)) + "</strong></div>" +
+    '<div><span class="fact-label">' + bi("Turnout", "मतदान प्रतिशत") + "</span><strong>" + (e.turnout || "To confirm") + "</strong></div>" +
+    '<div><span class="fact-label">' + bi("System", "प्रणाली") + "</span><strong>" + bi(e.systemEN, e.systemNE) + "</strong></div></div>" +
+    '<p class="outcome">' + bi(e.outcomeEN, e.outcomeNE) + "</p>" +
     "<p>" + bi(e.contextEN, e.contextNE) + "</p>" + note +
     "<h2>" + bi("Top parties", "मुख्य दल") + "</h2>" +
-    "<table><thead><tr><th>" + bi("Party", "दल") + "</th><th class=\"num\">" + bi("Votes", "मत") +
-    "</th><th class=\"num\">" + bi("Vote share", "मत प्रतिशत") + "</th><th class=\"num\">" + bi("Seats", "सिट") +
-    "</th></tr></thead><tbody>" + rows + "</tbody></table>" + relHtml + srcHtml;
+    '<div class="table-wrap"><table><thead><tr><th>' + bi("Party", "दल") + '</th><th class="num">' + bi("Votes", "मत") +
+    '</th><th class="num">' + bi("Vote share", "मत प्रतिशत") + '</th><th class="num">' + bi("Seats", "सिट") +
+    "</th></tr></thead><tbody>" + rows + "</tbody></table></div>" + relHtml + srcHtml;
   return chrome(prefix, e.titleEN, e.titleNE,
     [{ en: "Home", ne: "गृहपृष्ठ", href: "../index.html" }, { en: "Elections", ne: "निर्वाचनहरू", href: "../elections.html" }, { en: e.titleEN, ne: e.titleNE }],
     body, "");
@@ -190,7 +195,7 @@ function articlePage(a) {
   var facts = (a.facts || []).map(function (f) {
     return "<tr><td>" + bi(f.labelEN, f.labelNE) + "</td><td>" + bi(f.valueEN, f.valueNE) + "</td></tr>";
   }).join("");
-  var factsHtml = facts ? "<h2>" + bi("Key facts", "मुख्य तथ्यहरू") + "</h2><table><tbody>" + facts + "</tbody></table>" : "";
+  var factsHtml = facts ? "<h2>" + bi("Key facts", "मुख्य तथ्यहरू") + "</h2>" + '<div class="table-wrap"><table><tbody>' + facts + "</tbody></table></div>" : "";
   var bodyParas = (a.bodyEN || []).map(function (p, i) {
     var ne = (a.bodyNE || [])[i];
     return "<p>" + bi(p, ne || p) + "</p>";
@@ -207,7 +212,7 @@ function articlePage(a) {
   }
   var body = "<h2>" + bi(a.titleEN, a.titleNE) + "</h2>" +
     "<p class=\"article-cat\">" + bi(catLabelEN(a.category), catLabelNE(a.category)) + "</p>" +
-    "<p class=\"summary\">" + bi(a.summaryEN, a.summaryNE) + "</p>" + factsHtml + bodyParas + srcHtml + seeHtml;
+    "<p class=\"summary\">" + bi(a.summaryEN, a.summaryNE) + "</p>" + factsHtml + '<div class="article-body">' + bodyParas + "</div>" + srcHtml + seeHtml;
   return chrome(prefix, a.titleEN, a.titleNE,
     [{ en: "Home", ne: "गृहपृष्ठ", href: "../index.html" }, { en: "Articles", ne: "लेखहरू", href: "../articles.html" }, { en: a.titleEN, ne: a.titleNE }],
     body, "");
@@ -275,7 +280,21 @@ function main() {
   var articlePreview = ARTICLES.slice(0, 6).map(function (a) {
     return { url: articleUrl(a), titleEN: a.titleEN, titleNE: a.titleNE, summaryEN: a.summaryEN, summaryNE: a.summaryNE, metaEN: catLabelEN(a.category), metaNE: catLabelNE(a.category), year: "" };
   });
-  var homeBody = '<p class="intro" data-i18n="intro">' + esc(UI.en.intro) + "</p>" +
+  var latest = sorted[0];
+  var heroBody = '<section class="hero"><p class="kicker">' + bi("Encyclopedia of elections in Nepal", "नेपालका निर्वाचनहरूको विश्वकोश") + "</p>" +
+    "<h2>" + bi("Elections in Nepal, 1959 to today", "सन् १९५९ देखि आजसम्म नेपालका निर्वाचनहरू") + "</h2>" +
+    "<p>" + bi(UI.en.tagline, UI.ne.tagline) + "</p>" +
+    '<div class="stats">' +
+    '<div class="stat"><strong>' + sorted.length + "</strong><span>" + bi("Elections", "निर्वाचनहरू") + "</span></div>" +
+    '<div class="stat"><strong>' + ARTICLES.length + "</strong><span>" + bi("Articles", "लेखहरू") + "</span></div>" +
+    '<div class="stat"><strong>3</strong><span>' + bi("Levels: national, provincial, local", "तह: राष्ट्रिय, प्रदेश, स्थानीय") + "</span></div>" +
+    '<div class="stat"><strong>1959</strong><span>' + bi("First election to today", "पहिलो निर्वाचनदेखि आजसम्म") + "</span></div></div></section>";
+  var featureBody = latest ? '<section class="feature"><div><p class="kicker">' + bi("Latest election", "पछिल्लो निर्वाचन") + "</p>" +
+    "<h2><a href=\"" + electionUrl(latest) + "\">" + bi(latest.titleEN, latest.titleNE) + "</a></h2>" +
+    '<p class="meta-line">' + bi(latest.dateEN, latest.dateNE) + " | " + bi(levelLabelEN(latest.level), levelLabelNE(latest.level)) + " | " + (latest.seats === null ? "To confirm" : fmt(latest.seats)) + " " + bi("seats", "सिट") + "</p>" +
+    "<p>" + bi(latest.outcomeEN, latest.outcomeNE) + "</p></div>" +
+    '<a class="btn" href="' + electionUrl(latest) + '">' + bi("View election", "निर्वाचन हेर्नुहोस्") + "</a></section>" : "";
+  var homeBody = heroBody + featureBody + '<p class="intro" data-i18n="intro">' + esc(UI.en.intro) + "</p>" +
     '<section class="controls" aria-label="Search and filters">' +
     '<input type="search" id="search" placeholder="Search a party or an election, for example Congress, UML, or 2022" aria-label="Search">' +
     '<div class="filters">' +
