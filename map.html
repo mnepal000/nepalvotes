@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="stylesheet" href="styles.css?v=4">
+<link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
 <header>
@@ -31,7 +31,7 @@
 <p><span class="t-en">All 165 federal constituencies of the House of Representatives, from the Constituency Delimitation Commission report of 31 August 2017, grouped by province and district.</span><span class="t-ne">३१ अगस्ट २०१७ को निर्वाचन क्षेत्र निर्धारण आयोगको प्रतिवेदन अनुसार प्रतिनिधि सभाका सबै १६५ सङ्घीय निर्वाचन क्षेत्रहरू, प्रदेश र जिल्ला अनुसार।</span></p>
 <div class="sources map-note">
 <p><strong><span class="t-en">Please read this before using the map</span><span class="t-ne">नक्सा प्रयोग गर्नुअघि यो पढ्नुहोस्</span></strong></p>
-<p><span class="t-en">This map shows district boundaries, NOT exact constituency polygons. No verified open file of all 165 constituency polygons was found for this build, so constituency boundaries inside a district are not drawn and are not guessed. Click a district to see its constituencies, then click a constituency to highlight its district and see its details. Every constituency is also in the list below, so the map is never the only way to reach one.</span><span class="t-ne">यो नक्साले जिल्ला सीमाहरू देखाउँछ, निर्वाचन क्षेत्रका ठ्याक्कै सीमाहरू होइन। सबै १६५ निर्वाचन क्षेत्रका प्रमाणित खुला फाइल भेटिएन, त्यसैले जिल्लाभित्रका निर्वाचन क्षेत्र सीमाहरू कोरिएका छैनन् र अनुमान गरिएका छैनन्। जिल्लामा क्लिक गरेर त्यसका निर्वाचन क्षेत्रहरू हेर्नुहोस्, त्यसपछि निर्वाचन क्षेत्रमा क्लिक गरेर त्यसको जिल्ला र विवरण हेर्नुहोस्।</span></p>
+<p><span class="t-en">This map shows district boundaries, NOT exact constituency polygons. No verified open file of all 165 constituency polygons was found for this build, so constituency boundaries inside a district are not drawn and are not guessed. Click a district to see its constituencies, then click a constituency to highlight its district and see its details. Every constituency is also in the list below, so the map is never the only way to reach one. Outside Nepal is blank on this map, with no labels, so only Nepal is shown.</span><span class="t-ne">यो नक्साले जिल्ला सीमाहरू देखाउँछ, निर्वाचन क्षेत्रका ठ्याक्कै सीमाहरू होइन। सबै १६५ निर्वाचन क्षेत्रका प्रमाणित खुला फाइल भेटिएन, त्यसैले जिल्लाभित्रका निर्वाचन क्षेत्र सीमाहरू कोरिएका छैनन् र अनुमान गरिएका छैनन्। जिल्लामा क्लिक गरेर त्यसका निर्वाचन क्षेत्रहरू हेर्नुहोस्, त्यसपछि निर्वाचन क्षेत्रमा क्लिक गरेर त्यसको जिल्ला र विवरण हेर्नुहोस्। नेपाल बाहिरको भाग खाली छ, कुनै लेबल छैन, त्यसैले नेपाल मात्र देखिन्छ।</span></p>
 </div>
 <section class="controls" aria-label="Map controls">
 <label><span class="t-en">Province</span><span class="t-ne">प्रदेश</span></label>
@@ -74,6 +74,7 @@
 <script src="site.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="constituencies.js"></script>
+<script src="nepal-mask.js"></script>
 <script src="map.js"></script>
 </body>
 </html>

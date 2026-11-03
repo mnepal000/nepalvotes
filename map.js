@@ -149,12 +149,14 @@
       mapEl.innerHTML = "<p>Map library could not load. The constituency list below still works without the map.</p>";
       return;
     }
-    map = L.map("map", { scrollWheelZoom: true }).setView([28.0, 84.0], 7);
+    var nepalBounds = (window.NepalVotesMask && window.NepalVotesMask.nepalBounds) ? window.NepalVotesMask.nepalBounds() : null;
+    map = L.map("map", { scrollWheelZoom: true, minZoom: 6, maxZoom: 12, maxBounds: nepalBounds, maxBoundsViscosity: 1.0 }).setView([28.0, 84.0], 7);
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 12,
       attribution: "Map data: OpenStreetMap contributors. District boundaries: Acesmndr nepal-geojson (MIT)."
     }).addTo(map);
     fetch("districts.geojson").then(function (r) { return r.json(); }).then(function (geo) {
+      if (window.NepalVotesMask && window.NepalVotesMask.addNepalMask) { window.NepalVotesMask.addNepalMask(map, geo); }
       geoLayer = L.geoJSON(geo, {
         style: function (f) { return baseStyle(f.properties.district, f.properties.province); },
         onEachFeature: function (f, layer) {

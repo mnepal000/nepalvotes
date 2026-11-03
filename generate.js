@@ -116,7 +116,8 @@ function chrome(prefix, titleEN, titleNE, crumbs, body, scripts) {
     '<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
     '<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">\n' +
-    '<link rel="stylesheet" href="' + prefix + 'styles.css?v=4">\n</head>\n<body>\n' +
+    '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">\n' +
+    '<link rel="stylesheet" href="' + prefix + 'styles.css?v=5">\n</head>\n<body>\n' +
     "<header>\n<div class=\"wrap\">\n<div class=\"brand\">\n<div>\n" +
     '<h1><a href="' + prefix + 'index.html" class="brand-link">Nepal <span>Votes</span></a></h1>\n' +
     '<p class="tagline">' + bi(UI.en.tagline, UI.ne.tagline) + "</p>\n</div>\n" +
@@ -299,7 +300,14 @@ function main() {
     '<p class="meta-line">' + bi(latest.dateEN, latest.dateNE) + " | " + bi(levelLabelEN(latest.level), levelLabelNE(latest.level)) + " | " + (latest.seats === null ? "To confirm" : fmt(latest.seats)) + " " + bi("seats", "सिट") + "</p>" +
     "<p>" + bi(latest.outcomeEN, latest.outcomeNE) + "</p></div>" +
     '<a class="btn" href="' + electionUrl(latest) + '">' + bi("View election", "निर्वाचन हेर्नुहोस्") + "</a></section>" : "";
-  var homeBody = heroBody + featureBody + '<p class="intro" data-i18n="intro">' + esc(UI.en.intro) + "</p>" +
+  var mapSection = '<section class="map-section" aria-label="Constituency map"><h2>' + bi("Explore constituencies on the map", "नक्सामा निर्वाचन क्षेत्रहरू हेर्नुहोस्") + "</h2>" +
+    "<p>" + bi("All 165 federal constituencies, by province and district. Click a district to see its constituencies.", "सबै १६५ सङ्घीय निर्वाचन क्षेत्रहरू, प्रदेश र जिल्ला अनुसार। जिल्लामा क्लिक गरेर त्यसका निर्वाचन क्षेत्रहरू हेर्नुहोस्।") + "</p>" +
+    '<div class="sources map-note"><p><span class="t-en">This map shows district boundaries, NOT exact constituency polygons. No verified open file of all 165 constituency polygons was found for this build, so constituency boundaries inside a district are not drawn and are not guessed. Outside Nepal is blank on this map, with no labels, so only Nepal is shown.</span>' +
+    '<span class="t-ne">यो नक्साले जिल्ला सीमाहरू देखाउँछ, निर्वाचन क्षेत्रका ठ्याक्कै सीमाहरू होइन। सबै १६५ निर्वाचन क्षेत्रका प्रमाणित खुला फाइल भेटिएन, त्यसैले जिल्लाभित्रका निर्वाचन क्षेत्र सीमाहरू कोरिएका छैनन् र अनुमान गरिएका छैनन्। नेपाल बाहिरको भाग खाली छ, कुनै लेबल छैन, त्यसैले नेपाल मात्र देखिन्छ।</span></p></div>' +
+    '<div class="home-map-layout"><div id="home-map" aria-label="Interactive map of Nepal districts"></div>' +
+    '<div id="home-map-detail" class="map-panel"><p><span class="t-en">Click a district on the map to see its constituencies.</span><span class="t-ne">नक्सामा जिल्लामा क्लिक गरेर त्यसका निर्वाचन क्षेत्रहरू हेर्नुहोस्।</span></p></div></div>' +
+    '<p><a class="btn" href="map.html">' + bi("Open the full map", "पूर्ण नक्सा खोल्नुहोस्") + "</a></p></section>";
+  var homeBody = heroBody + featureBody + mapSection + '<p class="intro" data-i18n="intro">' + esc(UI.en.intro) + "</p>" +
     '<section class="controls" aria-label="Search and filters">' +
     '<input type="search" id="search" placeholder="Search a party or an election, for example Congress, UML, or 2022" aria-label="Search">' +
     '<div class="filters">' +
@@ -323,7 +331,7 @@ function main() {
     "<p>" + bi("Each election page also lists its own sources.", "प्रत्येक निर्वाचन पृष्ठमा त्यसका आफ्नै स्रोतहरू पनि दिइएका छन्।") + "</p></section>";
   fs.writeFileSync(path.join(DIR, "index.html"), chrome("", "Nepal Votes", "नेपाल भोट्स",
     [{ en: "Home", ne: "गृहपृष्ठ" }], homeBody,
-    '<script src="data.js"></script>\n<script src="articles.js"></script>\n<script src="app.js"></script>'));
+    '<script src="data.js"></script>\n<script src="articles.js"></script>\n<script src="app.js"></script>\n<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>\n<script src="constituencies.js"></script>\n<script src="nepal-mask.js"></script>\n<script src="home-map.js"></script>'));
   // Sitemap
   var urls = ["index.html", "elections.html", "articles.html", "map.html", "search.html"]
     .concat(sorted.map(electionUrl))
