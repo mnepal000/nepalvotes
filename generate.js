@@ -112,7 +112,7 @@ function chrome(prefix, titleEN, titleNE, crumbs, body, scripts) {
     '<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
     '<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">\n' +
-    '<link rel="stylesheet" href="' + prefix + 'styles.css">\n</head>\n<body>\n' +
+    '<link rel="stylesheet" href="' + prefix + 'styles.css?v=2">\n</head>\n<body>\n' +
     "<header>\n<div class=\"wrap\">\n<div class=\"brand\">\n<div>\n" +
     '<h1><a href="' + prefix + 'index.html" class="brand-link">Nepal<span>Votes</span></a></h1>\n' +
     '<p class="tagline">' + bi(UI.en.tagline, UI.ne.tagline) + "</p>\n</div>\n" +
