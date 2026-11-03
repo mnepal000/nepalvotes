@@ -1,7 +1,10 @@
-/* NepalVotes constituency map.
-   Map polygons are district boundaries only, not constituency polygons.
-   See map.html for the full honesty note and sources. Constituency
-   data comes from constituencies.js. No winner is shown anywhere here;
+/* NepalVotes constituency map: polygon-only, full-width, fixed.
+   No base tiles, no zoom, no dragging, no panning. Only Nepal's 77
+   district polygons from districts.geojson, coloured by province, on a
+   blank paper background, like a US election polygon map. District
+   boundaries only, not constituency polygons. See map.html for the
+   full honesty note and sources. Constituency data comes from
+   constituencies.js. No winner is shown anywhere here;
    winner is always To confirm. */
 (function () {
   var PROVINCES = ["Koshi", "Madhesh", "Bagmati", "Gandaki", "Lumbini", "Karnali", "Sudurpashchim"];
@@ -43,9 +46,6 @@
       "<p><a href=\"elections/2026-general-election.html\">2026 general election</a> | " +
       "<a href=\"elections/2022-general-election.html\">2022 general election</a></p>";
     paintDistricts();
-    if (map && districtLayers[c.d]) {
-      try { map.fitBounds(districtLayers[c.d].getBounds(), { padding: [20, 20], maxZoom: 10 }); } catch (e) {}
-    }
     document.querySelectorAll(".const-btn").forEach(function (b) {
       b.classList.toggle("active", b.getAttribute("data-name") === c.name);
     });
@@ -75,8 +75,11 @@
     paintDistricts();
   }
 
+  function fitNepal() {
+    if (map && geoLayer) { try { map.invalidateSize(); map.fitBounds(geoLayer.getBounds(), { padding: [8, 8] }); } catch (e) {} }
+  }
   function baseStyle(district, province) {
-    return { color: "#ffffff", weight: 1, fillColor: PROVINCE_COLORS[province] || "#5b84ad", fillOpacity: 0.55 };
+    return { color: "#ffffff", weight: 1, fillColor: PROVINCE_COLORS[province] || "#5b84ad", fillOpacity: 0.65 };
   }
   function paintDistricts() {
     if (!geoLayer) { return; }
@@ -87,7 +90,7 @@
         color: isSelected ? "#a41222" : "#ffffff",
         weight: isSelected ? 3 : 1,
         fillColor: PROVINCE_COLORS[p.province] || "#5b84ad",
-        fillOpacity: isSelected ? 0.75 : 0.55
+        fillOpacity: isSelected ? 0.85 : 0.65
       });
     });
   }
@@ -96,7 +99,7 @@
     geoLayer.eachLayer(function (layer) {
       var p = layer.feature.properties;
       var keep = !province || p.province === province;
-      layer.setStyle({ fillOpacity: keep ? 0.55 : 0.15 });
+      layer.setStyle({ fillOpacity: keep ? 0.65 : 0.15 });
       if (layer._path) { layer._path.style.display = ""; }
     });
     paintDistricts();
@@ -149,14 +152,13 @@
       mapEl.innerHTML = "<p>Map library could not load. The constituency list below still works without the map.</p>";
       return;
     }
-    var nepalBounds = (window.NepalVotesMask && window.NepalVotesMask.nepalBounds) ? window.NepalVotesMask.nepalBounds() : null;
-    map = L.map("map", { scrollWheelZoom: true, minZoom: 6, maxZoom: 12, maxBounds: nepalBounds, maxBoundsViscosity: 1.0 }).setView([28.0, 84.0], 7);
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 12,
-      attribution: "Map data: OpenStreetMap contributors. District boundaries: Acesmndr nepal-geojson (MIT)."
-    }).addTo(map);
+    map = L.map("map", {
+      zoomControl: false, attributionControl: false,
+      dragging: false, scrollWheelZoom: false, doubleClickZoom: false,
+      touchZoom: false, boxZoom: false, keyboard: false,
+      zoomSnap: 0.25, zoomDelta: 0
+    }).setView([28.0, 84.0], 7);
     fetch("districts.geojson").then(function (r) { return r.json(); }).then(function (geo) {
-      if (window.NepalVotesMask && window.NepalVotesMask.addNepalMask) { window.NepalVotesMask.addNepalMask(map, geo); }
       geoLayer = L.geoJSON(geo, {
         style: function (f) { return baseStyle(f.properties.district, f.properties.province); },
         onEachFeature: function (f, layer) {
@@ -168,7 +170,8 @@
           layer.on("click", function () { showDistrict(p.district); });
         }
       }).addTo(map);
-      try { map.fitBounds(geoLayer.getBounds(), { padding: [10, 10] }); } catch (e) {}
+      fitNepal();
+      window.addEventListener("resize", fitNepal);
     }).catch(function () {
       mapEl.innerHTML = "<p>District boundary file could not load. The constituency list below still works without the map.</p>";
     });
@@ -176,17 +179,6 @@
       var province = ev.target.value;
       dimByProvince(province);
       renderList();
-      if (province && geoLayer) {
-        var bounds = null;
-        geoLayer.eachLayer(function (layer) {
-          if (layer.feature.properties.province === province) {
-            bounds = bounds ? bounds.extend(layer.getBounds()) : layer.getBounds();
-          }
-        });
-        if (bounds) { map.fitBounds(bounds, { padding: [20, 20] }); }
-      } else if (geoLayer) {
-        map.fitBounds(geoLayer.getBounds(), { padding: [10, 10] });
-      }
     });
     document.getElementById("map-search").addEventListener("input", renderList);
     document.getElementById("map-reset").addEventListener("click", function () {
@@ -196,7 +188,7 @@
       selectedConstituency = null;
       renderList();
       dimByProvince("");
-      if (geoLayer) { map.fitBounds(geoLayer.getBounds(), { padding: [10, 10] }); }
+      fitNepal();
       var el = document.getElementById("map-detail");
       if (el) { el.innerHTML = "<p>Click a district on the map, or choose a constituency from the list below.</p>"; }
     });

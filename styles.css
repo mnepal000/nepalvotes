@@ -360,15 +360,16 @@ body.lang-ne .t-ne { display: inline; }
   .brand h1 { font-size: 1.9rem; }
 }
 
-/* Constituency map */
-#map { height: 540px; border: 1px solid var(--line-strong); border-radius: var(--radius); z-index: 1; background: #ffffff; }
-#home-map { height: 480px; border: 1px solid var(--line-strong); border-radius: var(--radius); z-index: 1; background: #ffffff; }
+/* Constituency map: polygon-only, full width, fixed (no zoom, no drag) */
+#map, #home-map { width: 100%; max-width: none; height: 520px; border: 1px solid var(--line-strong); border-radius: var(--radius); z-index: 1; background: var(--paper); overflow: hidden; }
+#map .leaflet-container, #home-map .leaflet-container { background: var(--paper); }
 .map-section { margin: 0 0 28px; }
-.home-map-layout { display: grid; grid-template-columns: 1.7fr 1fr; gap: 18px; align-items: start; margin: 18px 0; }
 .map-section .btn { display: inline-block; background: var(--blue); color: #fff; border-radius: 999px; padding: 12px 22px; min-height: 44px; text-decoration: none; font-weight: 700; }
 .map-section .btn:hover { background: var(--blue-dark); color: #fff; }
-.map-layout { display: grid; grid-template-columns: 1.7fr 1fr; gap: 18px; align-items: start; margin: 18px 0 28px; }
-.map-panel { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+.province-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 14px 0 18px; font-size: 15.5px; }
+.province-legend span { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
+.province-legend i { display: inline-block; width: 16px; height: 16px; border: 1px solid #ffffff; outline: 1px solid var(--line-strong); border-radius: 3px; }
+.map-panel { width: 100%; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; margin: 0 0 28px; }
 .map-panel h3 { margin-top: 0; }
 .map-note { margin-bottom: 18px; }
 .const-list h3 { margin-top: 28px; }
@@ -380,8 +381,8 @@ body.lang-ne .t-ne { display: inline; }
 .map-panel .const-btn { margin: 0 6px 6px 0; }
 #province-filter, #map-search { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: 10px; font-size: 16px; margin: 6px 0 14px; background: #fff; }
 @media (max-width: 900px) {
-  .map-layout { grid-template-columns: 1fr; }
-  #map { height: 420px; }
-  .home-map-layout { grid-template-columns: 1fr; }
-  #home-map { height: 380px; }
+  #map, #home-map { height: 360px; }
+}
+@media (max-width: 480px) {
+  #map, #home-map { height: 300px; }
 }
