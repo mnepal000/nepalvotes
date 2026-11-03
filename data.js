@@ -484,7 +484,7 @@ window.NEPALVOTES_DATA = [
 
 window.NEPALVOTES_UI = {
   en: {
-    tagline: "Every election in Nepal, in one archive, from 1959 to today.",
+    tagline: "A digital media platform for free and fair elections in Nepal",
     intro: "Search and filter national, provincial and local results. Figures are shown only when a source was read for v1. Where a figure is missing, the site says so instead of guessing.",
     searchPlaceholder: "Search a party or an election, for example Congress, UML, or 2022",
     levelAll: "All levels",
@@ -517,7 +517,7 @@ window.NEPALVOTES_UI = {
     footerNote: "NepalVotes v1 is a local preview build. It is not live at nepalvotes.com and no DNS change has been made."
   },
   ne: {
-    tagline: "सन् १९५९ देखि आजसम्म नेपालका सबै निर्वाचन, एउटै अभिलेखमा।",
+    tagline: "नेपालमा स्वतन्त्र र निष्पक्ष निर्वाचनका लागि डिजिटल मिडिया प्लेटफर्म",
     intro: "राष्ट्रिय, प्रदेश र स्थानीय नतिजा खोज्नुहोस् र छान्नुहोस्। v1 का लागि स्रोत पढिएको अवस्थामा मात्र अंक देखाइन्छ। अंक नभएको ठाउँमा अनुमान नगरी सोही कुरा लेखिन्छ।",
     searchPlaceholder: "दल वा निर्वाचन खोज्नुहोस्, जस्तै कांग्रेस, एमाले, वा २०२२",
     levelAll: "सबै तह",

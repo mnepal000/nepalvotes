@@ -112,9 +112,9 @@ function chrome(prefix, titleEN, titleNE, crumbs, body, scripts) {
     '<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
     '<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">\n' +
-    '<link rel="stylesheet" href="' + prefix + 'styles.css?v=2">\n</head>\n<body>\n' +
+    '<link rel="stylesheet" href="' + prefix + 'styles.css?v=3">\n</head>\n<body>\n' +
     "<header>\n<div class=\"wrap\">\n<div class=\"brand\">\n<div>\n" +
-    '<h1><a href="' + prefix + 'index.html" class="brand-link">Nepal<span>Votes</span></a></h1>\n' +
+    '<h1><a href="' + prefix + 'index.html" class="brand-link">Nepal <span>Votes</span></a></h1>\n' +
     '<p class="tagline">' + bi(UI.en.tagline, UI.ne.tagline) + "</p>\n</div>\n" +
     '<div class="lang" role="group" aria-label="Language">' +
     '<button type="button" id="lang-en">English</button>' +
@@ -282,7 +282,7 @@ function main() {
   });
   var latest = sorted[0];
   var heroBody = '<section class="hero"><p class="kicker">' + bi("Encyclopedia of elections in Nepal", "नेपालका निर्वाचनहरूको विश्वकोश") + "</p>" +
-    "<h2>" + bi("Elections in Nepal, 1959 to today", "सन् १९५९ देखि आजसम्म नेपालका निर्वाचनहरू") + "</h2>" +
+    "<h2>" + bi("Nepal Votes", "नेपाल भोट्स") + "</h2>" +
     "<p>" + bi(UI.en.tagline, UI.ne.tagline) + "</p>" +
     '<div class="stats">' +
     '<div class="stat"><strong>' + sorted.length + "</strong><span>" + bi("Elections", "निर्वाचनहरू") + "</span></div>" +
@@ -315,7 +315,7 @@ function main() {
     '<section class="sources" aria-label="Sources"><h2 data-i18n="sourcesTitle">' + esc(UI.en.sourcesTitle) + "</h2>" +
     '<p data-i18n="sourcesIntro">' + esc(UI.en.sourcesIntro) + "</p>" +
     "<p>" + bi("Each election page also lists its own sources.", "प्रत्येक निर्वाचन पृष्ठमा त्यसका आफ्नै स्रोतहरू पनि दिइएका छन्।") + "</p></section>";
-  fs.writeFileSync(path.join(DIR, "index.html"), chrome("", "Elections in Nepal, 1959 to today", "सन् १९५९ देखि आजसम्म नेपालका निर्वाचनहरू",
+  fs.writeFileSync(path.join(DIR, "index.html"), chrome("", "Nepal Votes", "नेपाल भोट्स",
     [{ en: "Home", ne: "गृहपृष्ठ" }], homeBody,
     '<script src="data.js"></script>\n<script src="articles.js"></script>\n<script src="app.js"></script>'));
   // Sitemap
