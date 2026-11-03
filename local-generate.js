@@ -8,7 +8,7 @@
    elections, articles, homepage and sitemap. generate.js also adds the
    local pages to sitemap.xml and the Local governments link to navigation,
    so run generate.js after this script, then run this script again: the
-   local pages use the same header, footer, styles.css?v=10 and site.js, and
+   local pages use the same header, footer, styles.css?v=11 and site.js, and
    survive regeneration. Do not hand edit files under local/; edit
    local-governments.js or local-reps.js and rerun this script. */
 var fs = require("fs");
@@ -59,7 +59,7 @@ function chrome(prefix, titleEN, titleNE, crumbs, body) {
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
     '<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">\n' +
     '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">\n' +
-    '<link rel="stylesheet" href="' + prefix + 'styles.css?v=10">\n</head>\n<body>\n' +
+    '<link rel="stylesheet" href="' + prefix + 'styles.css?v=11">\n</head>\n<body>\n' +
     "<header>\n<div class=\"wrap\">\n<div class=\"brand\">\n<div>\n" +
     '<h1><a href="' + prefix + 'index.html" class="brand-link">Nepal <span>Votes</span></a></h1>\n' +
     '<p class="tagline">' + bi("A digital media platform for free and fair elections in Nepal", "नेपालमा स्वतन्त्र र निष्पक्ष निर्वाचनका लागि डिजिटल मिडिया प्लेटफर्म") + "</p>\n</div>\n" +
